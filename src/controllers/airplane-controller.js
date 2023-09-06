@@ -8,7 +8,6 @@ const { SuccessResponse, ErrorResponse } = require("../utils/common");
 */
 async function createAirplane(req, res) {
   try {
-    // console.log(req.body);
     const airplane = await AirplaneService.createAirplane({
       modelNumber: req.body.modelNumber,
       capacity: req.body.capacity,
@@ -17,21 +16,33 @@ async function createAirplane(req, res) {
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;
-    // console.log(error);
     return res.status(error.statusCode).json(ErrorResponse);
   }
 }
 
 async function getAirplanes(req, res) {
   try {
-    // console.log(req.body);
     const airplanes = await AirplaneService.getAirplanes();
     SuccessResponse.data = airplanes;
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;
-    // console.log(error);
     return res.status(error.statusCode).json(ErrorResponse);
   }
 }
-module.exports = { createAirplane,getAirplanes };
+async function getAirplane(req, res) {
+  try {
+    const airplane = await AirplaneService.getAirplane(req.params.id);
+    SuccessResponse.data = airplane;
+    console.log("get airplane : ",airplane);
+    return res.status(StatusCodes.CREATED).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+module.exports = { 
+    createAirplane, 
+    getAirplanes, 
+    getAirplane 
+};
