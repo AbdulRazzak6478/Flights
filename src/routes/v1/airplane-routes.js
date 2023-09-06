@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { AirplaneController } = require('../../controllers');
-// const { AirplaneMiddlewares } = require('../../middlewares');
+const { AirplaneMiddlewares } = require('../../middlewares');
 const router = express.Router();
 
 

@@ -10,10 +10,15 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       modelNumber: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull:null
       },
       capacity: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue:0,
+        validate:{
+          max:500
+        }
       },
       createdAt: {
         allowNull: false,

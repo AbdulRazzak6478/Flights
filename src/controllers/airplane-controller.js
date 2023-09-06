@@ -1,31 +1,24 @@
 const { StatusCodes } = require('http-status-codes');
 
 const { AirplaneService } = require('../services');
+const { SuccessResponse, ErrorResponse } = require('../utils/common');
 /*
     POST : /airplanes
     req-body {modelNumber : 'airbus320', capacity:200}
 */
 async function createAirplane(req, res) {
     try {
-        console.log("request body",req.body);
+        console.log(req.body);
         const airplane = await AirplaneService.createAirplane({
             modelNumber:req.body.modelNumber,
             capacity:req.body.capacity
         });
-        console.log("airplane",airplane);
-        return res.status(StatusCodes.CREATED).json({
-            success:true,
-            message:'Successfully create an airplane',
-            data:airplane,
-            error:{}
-        })
+        SuccessResponse.data = airplane;
+        return res.status(StatusCodes.CREATED).json(SuccessResponse)
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            success:false,
-            message:'Something went wrong while creating airplane',
-            data:{},
-            error:error
-        });
+        ErrorResponse.error = error;
+        console.log(error);
+        return res.status(error.statusCode).json(ErrorResponse);
     }
 }
 module.exports = {createAirplane};
