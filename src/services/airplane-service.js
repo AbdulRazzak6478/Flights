@@ -11,7 +11,7 @@ async function createAirplane(data)
         return airplane;
     } catch (error) {
         let explanation = [];
-        console.log("airplane service error ,",error);
+        console.log('airplane service error ,',error);
         if(error.name == 'TypeError')
         {
             console.log("inside error ",error);

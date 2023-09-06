@@ -4,7 +4,7 @@ const { CityService } = require("../services");
 const { SuccessResponse, ErrorResponse } = require("../utils/common");
 
 /*
-    POST : /city
+    POST : /cities
     req-body {name :"mumbai"}
 */
 

@@ -17,7 +17,7 @@ async function createCity(data)
             console.log("inside error ",error);
             throw new AppError('Cannot create a new city',StatusCodes.INTERNAL_SERVER_ERROR)
         }
-        if(error.name == 'SequelizeValidationError')
+        if(error.name == 'SequelizeValidationError' || error.name == "SequelizeUniqueConstraintError")
         {
             error.errors.forEach(err => {
                 explanation.push(err.message)
@@ -25,7 +25,7 @@ async function createCity(data)
             console.log("inside error ",explanation);
             throw new AppError(explanation,StatusCodes.BAD_REQUEST)
         } 
-        throw new AppError('Cannot create a new city',StatusCodes.INTERNAL_SERVER_ERROR)
+        throw new AppError('Cannot create a new city object',StatusCodes.INTERNAL_SERVER_ERROR)
     }
 }
 
