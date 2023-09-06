@@ -29,6 +29,36 @@ async function createCity(data)
     }
 }
 
+async function getCity(id)
+{
+    try {
+        const city = await cityRepository.get(id);
+        return city;
+    } catch (error) {
+        if(error.statusCode == StatusCodes.NOT_FOUND)
+        {
+            throw new AppError("The airplane you requested is not found",error.statusCode);
+        }
+        throw new AppError('Cannot fetch data of city',StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+
+async function destroyCity(id)
+{
+    try {
+        const response = await cityRepository.destroy(id);
+        return response;
+    } catch (error) {
+        if(error.statusCode == StatusCodes.NOT_FOUND)
+        {
+            throw new AppError('The airplane you requested to Delete is not found',error.statusCode);
+        }
+        throw new AppError('Cannot fetch data of airplane',StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+
 module.exports = {
     createCity,
+    getCity,
+    destroyCity,
 }
