@@ -77,8 +77,8 @@ async function updateCity(id,data)
             throw new AppError(explanation,StatusCodes.BAD_REQUEST)
         } 
         console.log("error :",error);
-        throw new AppError('Cannot Update data of city',StatusCodes.INTERNAL_SERVER_ERROR)
-        // throw new AppError(error.explanation,error.statusCode)
+        // throw new AppError('Cannot Update data of city',StatusCodes.INTERNAL_SERVER_ERROR)
+        throw new AppError(error.explanation,error.statusCode)
     }
 }
 

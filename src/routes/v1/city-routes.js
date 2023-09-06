@@ -20,6 +20,6 @@ router.delete('/:id',CityController.destroyCity);
 
 // /api/v1/airplanes/:id => delete City by id
 // router.put('/:id',CityController.updateCity);
-router.patch('/:id',CityController.updateCity);
+router.patch('/:id',CityMiddlewares.validateCreateRequest,CityController.updateCity);
 
 module.exports = router;
