@@ -57,8 +57,34 @@ async function destroyCity(id)
     }
 }
 
+async function updateCity(id,data)
+{
+    try {
+        const updated_city = await cityRepository.update(id,data);
+        console.log("updated city object : ",updated_city);
+        return updated_city;
+    } catch (error) {
+        let explanation = [];
+        if(error.name == 'TypeError')
+        {
+            throw new AppError('Cannot update a new city object',StatusCodes.INTERNAL_SERVER_ERROR)
+        }
+        if(error.name == 'SequelizeValidationError')
+        {
+            error.errors.forEach(err => {
+                explanation.push(err.message)
+            });
+            throw new AppError(explanation,StatusCodes.BAD_REQUEST)
+        } 
+        console.log("error :",error);
+        throw new AppError('Cannot Update data of city',StatusCodes.INTERNAL_SERVER_ERROR)
+        // throw new AppError(error.explanation,error.statusCode)
+    }
+}
+
 module.exports = {
     createCity,
     getCity,
     destroyCity,
+    updateCity,
 }
