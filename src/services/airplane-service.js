@@ -66,9 +66,31 @@ async function destroyAirplane(id)
         throw new AppError('Cannot fetch data of airplane',StatusCodes.INTERNAL_SERVER_ERROR)
     }
 }
+async function updateAirplane(id,data)
+{
+    try {
+        const updated_airplane = await airplaneRepository.update(id,data);
+        return updated_airplane;
+    } catch (error) {
+        let explanation = [];
+        if(error.name == 'TypeError')
+        {
+            throw new AppError('Cannot create a new airplane object',StatusCodes.INTERNAL_SERVER_ERROR)
+        }
+        if(error.name == 'SequelizeValidationError')
+        {
+            error.errors.forEach(err => {
+                explanation.push(err.message)
+            });
+            throw new AppError(explanation,StatusCodes.BAD_REQUEST)
+        } 
+        throw new AppError('Cannot Update data of airplane',StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
 module.exports = {
     createAirplane,
     getAirplanes,
     getAirplane,
     destroyAirplane,
+    updateAirplane,
 }
