@@ -8,14 +8,13 @@ class CrudRepository{
     
     async create(data)
     {
-        // try 
-        // {
-            const response = await this.model.create(data);
-            return response;
-        // } catch (error) {
-        //     Logger.error("something went wrong in crud repo : create");
-        //     throw error;
-        // }
+        const response = await this.model.create(data);
+        return response;
+    }
+    async getAll()
+    {
+        const response = await this.model.findAll();
+        return response;
     }
 }
 module.exports = CrudRepository;
