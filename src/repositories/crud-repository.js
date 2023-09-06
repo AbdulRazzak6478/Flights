@@ -20,9 +20,22 @@ class CrudRepository{
         return response;
     }
 
-    async get(data)
+    async get(id)
     {
-        const response = await this.model.findByPk(data);
+        const response = await this.model.findByPk(id);
+        if(!response)
+        {
+            throw new AppError("Not able to found the resource",StatusCodes.NOT_FOUND)
+        }
+        return response;
+    }
+    async destroy(data)
+    {
+        const response = await this.model.destroy({
+            where:{
+                id:data
+            }
+        });
         if(!response)
         {
             throw new AppError("Not able to found the resource",StatusCodes.NOT_FOUND)
