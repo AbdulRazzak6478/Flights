@@ -29,19 +29,19 @@ async function createCity(data)
     }
 }
 
-async function getCity(id)
-{
-    try {
-        const city = await cityRepository.get(id);
-        return city;
-    } catch (error) {
-        if(error.statusCode == StatusCodes.NOT_FOUND)
-        {
-            throw new AppError("The airplane you requested is not found",error.statusCode);
-        }
-        throw new AppError('Cannot fetch data of city',StatusCodes.INTERNAL_SERVER_ERROR)
-    }
-}
+// async function getCity(id)
+// {
+//     try {
+//         const city = await cityRepository.get(id);
+//         return city;
+//     } catch (error) {
+//         if(error.statusCode == StatusCodes.NOT_FOUND)
+//         {
+//             throw new AppError("The airplane you requested is not found",error.statusCode);
+//         }
+//         throw new AppError('Cannot fetch data of city',StatusCodes.INTERNAL_SERVER_ERROR)
+//     }
+// }
 
 async function destroyCity(id)
 {
@@ -84,7 +84,7 @@ async function updateCity(id,data)
 
 module.exports = {
     createCity,
-    getCity,
+    // getCity,
     destroyCity,
     updateCity,
 }

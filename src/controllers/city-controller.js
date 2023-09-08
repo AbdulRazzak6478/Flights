@@ -21,17 +21,17 @@ async function createCity(req, res) {
   }
 }
 
-async function getCity(req, res) {
-  try {
-    const city = await CityService.getCity(req.params.id);
-    SuccessResponse.data = city;
-    console.log("get city : ",airplane);
-    return res.status(StatusCodes.CREATED).json(SuccessResponse);
-  } catch (error) {
-    ErrorResponse.error = error;
-    return res.status(error.statusCode).json(ErrorResponse);
-  }
-}
+// async function getCity(req, res) {
+//   try {
+//     const city = await CityService.getCity(req.params.id);
+//     SuccessResponse.data = city;
+//     console.log("get city : ",airplane);
+//     return res.status(StatusCodes.CREATED).json(SuccessResponse);
+//   } catch (error) {
+//     ErrorResponse.error = error;
+//     return res.status(error.statusCode).json(ErrorResponse);
+//   }
+// }
 
 async function destroyCity(req,res){
   try {
@@ -61,7 +61,7 @@ async function updateCity(req,res){
 
 module.exports = {
     createCity,
-    getCity,
+    // getCity,
     destroyCity,
     updateCity,
 }
