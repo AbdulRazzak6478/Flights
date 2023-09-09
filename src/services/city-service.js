@@ -29,19 +29,36 @@ async function createCity(data)
     }
 }
 
-// async function getCity(id)
-// {
-//     try {
-//         const city = await cityRepository.get(id);
-//         return city;
-//     } catch (error) {
-//         if(error.statusCode == StatusCodes.NOT_FOUND)
-//         {
-//             throw new AppError("The airplane you requested is not found",error.statusCode);
-//         }
-//         throw new AppError('Cannot fetch data of city',StatusCodes.INTERNAL_SERVER_ERROR)
-//     }
-// }
+async function getCity(id)
+{
+    try {
+        const city = await cityRepository.get(id);
+        console.log("city response :",city);
+        return city;
+    } catch (error) {
+        console.log("city response :",error);
+        if(error.statusCode == StatusCodes.NOT_FOUND)
+        {
+            throw new AppError("The Cities you requested is not found",error.statusCode);
+        }
+        throw new AppError('Cannot fetch data of city1',StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+async function getCities()
+{
+    try {
+        const city = await cityRepository.getAll();
+        console.log("city response :",city);
+        return city;
+    } catch (error) {
+        console.log("city response :",error);
+        if(error.statusCode == StatusCodes.NOT_FOUND)
+        {
+            throw new AppError("The Cities you requested are not found",error.statusCode);
+        }
+        throw new AppError('Cannot fetch data of city1',StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
 
 async function destroyCity(id)
 {
@@ -84,7 +101,8 @@ async function updateCity(id,data)
 
 module.exports = {
     createCity,
-    // getCity,
+    getCity,
+    getCities,
     destroyCity,
     updateCity,
 }

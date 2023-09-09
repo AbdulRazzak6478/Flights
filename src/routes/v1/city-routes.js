@@ -13,10 +13,14 @@ router.post(
 );
 
 // /api/v1/cities/:id GET city by id
-// router.get('/:id',CityController.getCity);
+router.get('/:id',CityController.getCity);
+
+// /api/v1/cities/ GET All cities 
+router.get('/',CityController.getCities);
 
 // /api/v1/cities/:id => delete city by id
 router.delete('/:id',CityController.destroyCity);
+
 
 // /api/v1/airplanes/:id => delete City by id
 // router.put('/:id',CityController.updateCity);

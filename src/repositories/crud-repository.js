@@ -23,6 +23,7 @@ class CrudRepository{
     async get(id)
     {
         const response = await this.model.findByPk(id);
+        console.log("city response : ",response);
         if(!response)
         {
             throw new AppError("Not able to found the resource",StatusCodes.NOT_FOUND)
