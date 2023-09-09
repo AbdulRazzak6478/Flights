@@ -24,30 +24,35 @@ app.listen(PORT,async()=>{
     //   console.log("airport ",airport)
 
         // internal functions
-        
-        //   const bengaluru = await City.findByPk(1);
-        //   console.log(bengaluru);
-      // const dbpairport = await bengaluru.createAirport({name: 'Huballi Airport', code: 'HBL'});
-      // console.log(dbpairport);
-      // const airportsInBlr = await bengaluru.getAirports();
-      // console.log(airportsInBlr);
-      // const hbairport = await Airport.findByPk(3);
-      // console.log(hbairport);
-      // await bengaluru.removeAirports(hbairport);
-      // const mumbai = await City.findByPk(2);
-      // const sh = mumbai.createAirport({name: 'CSI airport', code: 'MUM'});
-      // await City.destroy({
-      //     where: {
-      //         id: 2
-      //     }
-      // });
-      // const sh = await Airport.findByPk(2);
-      // mumbai.removeAirport(sh)
-      // const city = await City.findByPk(4);
-      // await city.createAirport({name: 'Indore airport', code: 'IND'});
-      // await City.destroy({
-      //     where: {
-      //         id: 4
-      //     }
-      // });
+
+    //       const Channai = await City.findByPk(3);
+    //       console.log(Channai);
+    //   const dbpairport = await Channai.createAirport({name: 'Chain Airport', code: 'CHI'});
+    //   console.log(dbpairport);
+
+        // const bengaluru = await City.findByPk(1);
+    //   const airportsInBlr = await bengaluru.getAirports();
+    //   console.log(airportsInBlr);
+
+    //   const hbairport = await Airport.findByPk(2);
+    //   console.log(hbairport);
+
+    //   await bengaluru.removeAirports(hbairport);
+    //   const hyderabad = await City.findByPk(2);
+    //   const sh = hyderabad.createAirport({name: 'indra airport', code: 'MUM'});
+    //   await City.destroy({
+    //       where: {
+    //           id: 1
+    //       }
+    //   });
+    //   const sh = await Airport.findByPk(4);
+    //   const chain = await City.findByPk(3);
+    //   chain.removeAirport(sh)
+    //   const city = await City.findByPk(3);
+    //   await city.createAirport({name: 'Indore airport2', code: 'IND'});
+    //   await City.destroy({
+    //       where: {
+    //           id: 3
+    //       }
+    //   });
 });
