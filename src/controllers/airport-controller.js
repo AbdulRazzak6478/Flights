@@ -75,8 +75,10 @@ async function destroyAirport(req,res){
 async function updateAirport(req,res){
     try {
         const updated_airport = await AirportService.updateAirport(req.params.id,{
-            modelNumber: req.body.modelNumber,
-            capacity: req.body.capacity,
+            name: req.body.name,
+            code: req.body.code,
+            cityId:req.body.cityId,
+            address:req.body.address
           });
         SuccessResponse.data = updated_airport;
         return res.status(StatusCodes.OK).json(SuccessResponse)
