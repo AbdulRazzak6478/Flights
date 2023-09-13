@@ -13,8 +13,8 @@ router.post(
   FlightController.createFlight
 );
 
-// /api/v1/airports GET_ALL
-// router.get('/',FlightController.getAirports);
+// /api/v1/flights?trips=MUM-DEL query_params GET_ALL
+router.get('/',FlightController.getAllFlights);
 
 // /api/v1/airports/:id GET Airport by id
 // router.get('/:id',FlightController.getAirport);

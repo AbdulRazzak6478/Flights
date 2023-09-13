@@ -1,6 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const { FlightRepository } = require('../repositories');
 const AppError = require('../utils/errors/app-error');
+const { Op } = require('sequelize');
 
 const flightRepository = new FlightRepository();
 
@@ -30,14 +31,65 @@ async function createFlight(data)
     }
 }
 
-async function getAirports()
+async function getAllFlights(query)
 {
-    try {
-        const airports = await airportRepository.getAll();
-        return airports;
-    } catch (error) {
-        throw new AppError('Cannot fetch data of all Airports',StatusCodes.INTERNAL_SERVER_ERROR)
+    // trips=MUM-HYD
+    let customFilter = {};
+    let sortFilter = [];
+    let endingTripDate = ' 23:59:00';
+    let startingTripDate = ' 00:00:00';
+    if(query.trips)
+    {
+        [departureAirportId, arrivalAirportId] = query.trips.split('-');
+        customFilter.departureAirportId = departureAirportId;
+        customFilter.arrivalAirportId = arrivalAirportId;
+        if(arrivalAirportId === departureAirportId)
+        {
+            throw new AppError('Cannot fetch flights ! departure and arrival airports Id must not be same in trips',StatusCodes.BAD_REQUEST)
+        }
     }
+
+    if(query.price)
+    {
+        [minPrice, maxPrice] = query.price.split('-');
+        customFilter.price = {
+            [Op.between]:[minPrice,((maxPrice == undefined) ? 30000:maxPrice)]
+        }
+    }
+
+    if(query.travellers)
+    {
+        customFilter.totalSeats = {
+            [Op.gte]:query.travellers
+        }
+    }
+
+    if(query.tripDate)
+    {
+        // input : 2023-09-14 
+        // `Flight`.`departureTime` BETWEEN '2023-09-13 18:30:00' AND '2023-09-14 18:29:00' 
+        customFilter.departureTime={
+            [Op.between]:[query.tripDate+startingTripDate,query.tripDate+endingTripDate]
+        }
+    }
+
+    if(query.sort)
+    {
+        const params = query.sort.split(',');
+        const sortFilters = params.map((param)=>param.split('_'));
+        sortFilter = sortFilters
+    }
+
+   console.log('filter : ',customFilter)
+    try {
+        const flights = await flightRepository.getAllFlights(customFilter,sortFilter);
+        console.log("data ",flights);
+        return flights;
+    } catch (error) {
+        console.log("error ",error);
+        throw new AppError(`Cannot fetch data of filter Flights , ${error?.message}`,error.statusCode ? error.statusCode: StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+
 }
 
 async function getAirport(id)
@@ -90,8 +142,5 @@ async function updateAirport(id,data)
 }
 module.exports = {
     createFlight,
-    // getAirports,
-    // getAirport,
-    // destroyAirport,
-    // updateAirport,
+    getAllFlights,
 }
