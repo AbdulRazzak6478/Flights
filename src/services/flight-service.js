@@ -2,6 +2,9 @@ const { StatusCodes } = require('http-status-codes');
 const { FlightRepository } = require('../repositories');
 const AppError = require('../utils/errors/app-error');
 const { Op } = require('sequelize');
+const { AirportRepository } = require('../repositories');
+const { getAirportByAttribute } = require('./airport-service');
+const airportRepository = new AirportRepository();
 
 const flightRepository = new FlightRepository();
 
@@ -80,10 +83,11 @@ async function getAllFlights(query)
         sortFilter = sortFilters
     }
 
-   console.log('filter : ',customFilter)
-    try {
+   console.log('filter object : ',customFilter)
+    try { 
         const flights = await flightRepository.getAllFlights(customFilter,sortFilter);
-        console.log("data ",flights);
+        
+        //  const res = await getFlightAirport(flights,result);
         return flights;
     } catch (error) {
         console.log("error ",error);
@@ -91,55 +95,32 @@ async function getAllFlights(query)
     }
 
 }
-
-async function getAirport(id)
+async function getFlightAirport(flights)
 {
-    try {
-        const airport = await airportRepository.get(id);
-        return airport;
-    } catch (error) {
-        if(error.statusCode == StatusCodes.NOT_FOUND)
-        {
-            throw new AppError("The airport you requested is not found",error.statusCode);
-        }
-        throw new AppError('Cannot fetch data of Airport',StatusCodes.INTERNAL_SERVER_ERROR)
-    }
+    let resultFlights = [];
+    flights.forEach(async(obj,index) => {
+        let flight = {...obj.dataValues}
+        // console.log('flight : ',flight);
+        const desAirport = await getAirportByAttribute(flight.departureAirportId)
+        // console.log('destination',desAirport);
+        const arrAirport = await getAirportByAttribute(flight.arrivalAirportId)
+        // console.log('arrival ',arrAirport);
+        flight.departureAirportId = {...desAirport};
+        flight.arrivalAirportId = {...arrAirport};
+        // console.log('complete flight : ',flight);
+        const fl = JSON.parse(JSON.stringify(flight))
+        // const fl = {...flight}
+        // console.log('fl ',fl);
+        // resultFlights.push(JSON.parse(JSON.stringify(flight)));
+        // resultFlights.push({...flight}) 
+        resultFlights.push(fl)
+        console.log('result one ',resultFlights);
+        return resultFlights;
+    });
+    console.log('result',resultFlights);
+    return resultFlights;
 }
 
-async function destroyAirport(id)
-{
-    try {
-        const response = await airportRepository.destroy(id);
-        return response;
-    } catch (error) {
-        if(error.statusCode == StatusCodes.NOT_FOUND)
-        {
-            throw new AppError("The airplane you requested to Delete is not found",error.statusCode);
-        }
-        throw new AppError('Cannot destroy the Airport',StatusCodes.INTERNAL_SERVER_ERROR)
-    }
-}
-async function updateAirport(id,data)
-{
-    try {
-        const updated_airport = await airportRepository.update(id,data);
-        return updated_airport;
-    } catch (error) {
-        let explanation = [];
-        if(error.name == 'TypeError')
-        {
-            throw new AppError('Cannot Update a new Airport Object',StatusCodes.INTERNAL_SERVER_ERROR)
-        }
-        if(error.name == 'SequelizeValidationError')
-        {
-            error.errors.forEach(err => {
-                explanation.push(err.message)
-            });
-            throw new AppError(explanation,StatusCodes.BAD_REQUEST)
-        } 
-        throw new AppError('Cannot Update data of Airport',StatusCodes.INTERNAL_SERVER_ERROR)
-    }
-}
 module.exports = {
     createFlight,
     getAllFlights,

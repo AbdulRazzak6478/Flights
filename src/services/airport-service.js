@@ -4,6 +4,7 @@ const AppError = require('../utils/errors/app-error');
 
 const airportRepository = new AirportRepository();
 
+
 async function createAirport(data)
 {
     try {
@@ -26,6 +27,23 @@ async function createAirport(data)
             throw new AppError(explanation,StatusCodes.BAD_REQUEST)
         } 
         throw new AppError('Cannot create a new Airport object',StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+
+async function getAirportByAttribute(attribute)
+{
+    try {
+        const airport = await airportRepository.getEntryByAttribute(attribute);
+        // for (const obj of airport) {
+        //     return obj.dataValues;
+        // }
+        return airport;
+    } catch (error) {
+        if(error.statusCode == StatusCodes.NOT_FOUND)
+        {
+            throw new AppError("The airport you requested is not found",error.statusCode);
+        }
+        throw new AppError('Cannot fetch data of Airport',StatusCodes.INTERNAL_SERVER_ERROR)
     }
 }
 
@@ -93,4 +111,5 @@ module.exports = {
     getAirport,
     destroyAirport,
     updateAirport,
+    getAirportByAttribute,
 }
