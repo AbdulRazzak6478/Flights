@@ -15,4 +15,3 @@ app.listen(PORT,()=>{
     Logger.info(" Successfully started server "," root ", {});
 });
 
-
