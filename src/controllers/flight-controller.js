@@ -48,56 +48,21 @@ async function getAllFlights(req, res) {
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;
-    console.log("get all error ",error);
+    console.log("get all error ", error);
     return res.status(error.statusCode).json(ErrorResponse);
   }
 }
 
 /*
-    GET : /airports/:id
+    GET : /Flights/:id
     req-body {}
 */
-async function getAirport(req, res) {
+async function getFlight(req, res) {
   try {
-    const airport = await AirportService.getAirport(req.params.id);
-    SuccessResponse.data = airport;
-    console.log("get airport : ", airport);
+    const flight = await FlightService.getFlight(req.params.id);
+    SuccessResponse.data = flight;
+    console.log("get Flight : ", flight);
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
-  } catch (error) {
-    ErrorResponse.error = error;
-    return res.status(error.statusCode).json(ErrorResponse);
-  }
-}
-
-/*
-    DELETE : /airports/:id
-    req-body {}
-*/
-async function destroyAirport(req, res) {
-  try {
-    const airport = await AirportService.destroyAirport(req.params.id);
-    SuccessResponse.data = airport;
-    return res.status(StatusCodes.OK).json(SuccessResponse);
-  } catch (error) {
-    ErrorResponse.error = error;
-    return res.status(error.statusCode).json(ErrorResponse);
-  }
-}
-
-/*
-    PATCH : /airports/:id
-    req-body {name : 'IGI', code:'DEL, address:...., cityId : 5}
-*/
-async function updateAirport(req, res) {
-  try {
-    const updated_airport = await AirportService.updateAirport(req.params.id, {
-      name: req.body.name,
-      code: req.body.code,
-      cityId: req.body.cityId,
-      address: req.body.address,
-    });
-    SuccessResponse.data = updated_airport;
-    return res.status(StatusCodes.OK).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;
     return res.status(error.statusCode).json(ErrorResponse);
@@ -107,7 +72,5 @@ async function updateAirport(req, res) {
 module.exports = {
   createFlight,
   getAllFlights,
-  // getAirport,
-  // destroyAirport,
-  // updateAirport,
+  getFlight,
 };
