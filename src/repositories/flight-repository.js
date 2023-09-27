@@ -3,7 +3,8 @@ const { Flight, Airplane, Airport, City } = require("../models");
 const AppError = require("../utils/errors/app-error");
 const { StatusCodes } = require("http-status-codes");
 const { Sequelize } = require("sequelize");
-const db = require('../models')
+const db = require('../models');
+const { addRowLockFlights } = require("./queries");
 
 class FlightRepository extends CrudRepository {
   constructor() {
@@ -130,7 +131,7 @@ class FlightRepository extends CrudRepository {
   }
 
   async updateRemainingSeats(id, seats, dec = true){
-    await db.sequelize.query(`SELECT * from flights WHERE Flights.id = ${id} FOR UPDATE;`);
+    await db.sequelize.query(addRowLockFlights(id));
     // get old data but updated in the db 
     const flight = await Flight.findByPk(id)
     console.log("dec ",dec,typeof dec);
@@ -139,11 +140,9 @@ class FlightRepository extends CrudRepository {
     if(dec) {
       console.log('inside decrement');
       const response = await flight.decrement('totalSeats', {by: seats});
-      // return response;
     } else {
       console.log("inside increment");
       const response = await flight.increment('totalSeats', {by: seats});
-      // return response;
     }
     return await Flight.findByPk(id);
     // return await this.getBookedFlight(id);
