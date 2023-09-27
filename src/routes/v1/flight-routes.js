@@ -14,10 +14,16 @@ router.post(
 );
 
 // /api/v1/flights?trips=MUM-DEL query_params GET_ALL
-router.get('/',FlightController.getAllFlights);
+router.get("/", FlightController.getAllFlights);
 
 // /api/v1/flights/:id GET Flight by id
-router.get('/:id',FlightController.getFlight);
+router.get("/:id", FlightController.getFlight);
 
+// /api/v1/flights/:id/seats
+router.patch(
+  "/:id/seats",
+  FlightMiddlewares.validateUpdateSeatsRequest,
+  FlightController.updateSeats
+);
 
 module.exports = router;

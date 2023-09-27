@@ -125,7 +125,7 @@ async function getFlightAirport(flights)
 async function getFlight(id)
 {
     try {
-        const flight = await flightRepository.get(id);
+        const flight = await flightRepository.getBookedFlight(id);
         return flight;
     } catch (error) {
         if(error.statusCode == StatusCodes.NOT_FOUND)
@@ -136,8 +136,25 @@ async function getFlight(id)
     }
 }
 
+async function updateSeats(data)
+{
+    try {
+        const response = await flightRepository.updateRemainingSeats(data.id, data.seats, data.dec);
+        return response;
+    } catch (error) {
+        if(error.name == 'TypeError')
+        {
+            console.log("inside error ",error);
+            throw new AppError(`Cannot update a flight object ${error.message}`,StatusCodes.INTERNAL_SERVER_ERROR)
+        }
+        console.log("updateSeats  flight error : ",error);
+        throw new AppError('Cannot update data of Flight',StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+
 module.exports = {
     createFlight,
     getAllFlights,
-    getFlight
+    getFlight,
+    updateSeats
 }
