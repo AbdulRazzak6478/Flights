@@ -3,7 +3,7 @@ const { Flight, Airplane, Airport, City } = require("../models");
 const AppError = require("../utils/errors/app-error");
 const { StatusCodes } = require("http-status-codes");
 const { Sequelize } = require("sequelize");
-const db = require('../models');
+const db = require("../models");
 const { addRowLockFlights } = require("./queries");
 
 class FlightRepository extends CrudRepository {
@@ -36,10 +36,10 @@ class FlightRepository extends CrudRepository {
               Sequelize.col("departureAirport.code")
             ),
           },
-          include:{
-            model:City,
-            required:true
-          }
+          include: {
+            model: City,
+            required: true,
+          },
         },
         {
           model: Airport,
@@ -54,10 +54,10 @@ class FlightRepository extends CrudRepository {
             ),
           },
           // nested join can be done
-          include:{
-            model:City,
-            required:true
-          }
+          include: {
+            model: City,
+            required: true,
+          },
         },
       ],
     });
@@ -73,9 +73,8 @@ class FlightRepository extends CrudRepository {
     return response;
   }
 
-  async getBookedFlight(id)
-  {
-    const flight = await this.model.findByPk(id,{
+  async getBookedFlight(id) {
+    const flight = await this.model.findByPk(id, {
       include: [
         {
           // custom join in already in primary key
@@ -96,10 +95,10 @@ class FlightRepository extends CrudRepository {
               Sequelize.col("departureAirport.code")
             ),
           },
-          include:{
-            model:City,
-            required:true
-          }
+          include: {
+            model: City,
+            required: true,
+          },
         },
         {
           model: Airport,
@@ -114,13 +113,13 @@ class FlightRepository extends CrudRepository {
             ),
           },
           // nested join can be done
-          include:{
-            model:City,
-            required:true
-          }
+          include: {
+            model: City,
+            required: true,
+          },
         },
       ],
-    })
+    });
     if (flight.length == 0) {
       throw new AppError(
         "Not able to found the flight of these filters",
@@ -130,25 +129,39 @@ class FlightRepository extends CrudRepository {
     return flight;
   }
 
-  async updateRemainingSeats(id, seats, dec = true){
-    await db.sequelize.query(addRowLockFlights(id));
-    // get old data but updated in the db 
-    const flight = await Flight.findByPk(id)
-    console.log("dec ",dec,typeof dec);
-    dec = +dec;
-    // console.log(parseInt(dec)); // NaN
-    if(dec) {
-      console.log('inside decrement');
-      const response = await flight.decrement('totalSeats', {by: seats});
-    } else {
-      console.log("inside increment");
-      const response = await flight.increment('totalSeats', {by: seats});
+  async updateRemainingSeats(id, seats, dec = true) {
+    const transaction = await db.sequelize.transaction();
+    try {
+      await db.sequelize.query(addRowLockFlights(id));
+      // get old data but updated in the db
+      const flight = await Flight.findByPk(id);
+      // console.log("dec ",dec,typeof dec);
+      dec = +dec;
+      // console.log(parseInt(dec)); // NaN
+      if (dec) {
+        console.log("inside decrement");
+        const response = await flight.decrement(
+          "totalSeats",
+          { by: seats },
+          { transaction: transaction }
+        );
+      } else {
+        console.log("inside increment");
+        const response = await flight.increment(
+          "totalSeats",
+          { by: seats },
+          { transaction: transaction }
+        );
+      }
+      await transaction.commit();
+      return await Flight.findByPk(id);
+      // return await this.getBookedFlight(id);
+      // return flight;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
     }
-    return await Flight.findByPk(id);
-    // return await this.getBookedFlight(id);
-    // return flight;
   }
-
 }
 
 module.exports = FlightRepository;
