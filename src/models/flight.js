@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
       departureAirportId: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
+      }, 
       arrivalAirportId: {
         type: DataTypes.STRING,
         allowNull: false,
