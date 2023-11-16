@@ -97,3 +97,49 @@ Airplane
   )
 
 ```
+
+Cities
+- `http://localhost:3000/api/v1/cities/`
+```
+  To create city
+  /*
+    POST : /cities
+    req-body {name :"mumbai"}
+  */
+  {
+    name : req.body.name
+  }
+
+  To get cities
+  /*
+    GEt : /cities
+    req-body {}
+  */
+
+  To get particular city
+  /*
+    GEt : /cities/:id
+    req-body {}
+  */
+  {
+    id:req.params.id
+  }
+  
+  To get DELETE city
+  /*
+    DELETE : /cities/:id
+    req-body {}
+  */
+  {
+    id:req.params.id
+  }
+
+  To get Update city
+  /*
+    PATCH : /cities/:id
+    req-body {}
+  */
+  {
+    id:req.params.id
+  }
+```
