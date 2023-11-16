@@ -46,3 +46,54 @@ Lets take a look inside the `src` folder
  ```
  npm run dev
  ```
+
+
+# How to use Flights Routes
+Airplane
+- `http://localhost:3000/api/v1/airplanes/`
+```
+  to create a airplane
+  /*
+    POST : /airplanes
+    req-body {modelNumber : 'airbus320', capacity:200}
+  */
+  {
+    modelNumber: req.body.modelNumber,
+    capacity: req.body.capacity,
+  }
+
+
+  to get airplanes
+  /*
+    GEt : /airplanes
+    req-body {}
+  */
+
+
+  to get particular airplane
+  /*
+    GET : /airplanes/:id
+    req-body {}
+  */
+
+
+  to delete a airplane
+  /*
+    DELETE : /airplanes/:id
+    req-body {}
+  */
+
+
+  to update airplane
+  /*
+    PATCH : /airplanes/:id
+    req-body {modelNumber : 'airbus320', capacity:200}
+  */
+  (req.params.id,
+    {
+      modelNumber: req.body.modelNumber,
+      capacity: req.body.capacity,
+    }
+  )
+
+```
