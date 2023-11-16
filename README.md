@@ -137,9 +137,65 @@ Cities
   To get Update city
   /*
     PATCH : /cities/:id
+    req-body { name :"mumbai"}
+  */
+  {
+    id:req.params.id,
+    name : req.body.name
+  }
+```
+
+Airports
+- `http://localhost:3000/api/v1/airports/`
+```
+  To create airport
+  /*
+    POST : /airports
+    req-body {name : 'IGI', code:'DEL, address:...., cityId : 5}
+  */
+  body {
+      name: req.body.name,
+      code: req.body.code,
+      address: req.body.address,
+      cityId : req.body.cityId,
+    }
+
+  To get airports
+  /*
+    GEt : /airports
+    req-body {}
+  */
+
+  To get particular airports
+  /*
+    GEt : /airports/:id
     req-body {}
   */
   {
     id:req.params.id
   }
+
+  To get DELETE airports
+  /*
+    DELETE : /airports/:id
+    req-body {}
+  */
+  {
+    id:req.params.id
+  }
+
+  To get Update airports
+  /*
+    PATCH : /airports/:id
+    req-body {name : 'IGI', code:'DEL, address:...., cityId : 5}
+  */
+  body 
+    (req.params.id,
+      {
+        name: req.body.name,
+        code: req.body.code,
+        cityId:req.body.cityId,
+        address:req.body.address
+      }
+    )
 ```
