@@ -4,6 +4,7 @@
   "description": "basic node config practices",
   "main": "index.js",
   "scripts": {
+    "start":"node src/index.js",
     "dev": "npx nodemon src/index.js"
   },
   "author": "Abdul Razzak",
