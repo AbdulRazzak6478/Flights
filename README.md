@@ -199,3 +199,50 @@ Airports
       }
     )
 ```
+
+Flights
+- ``http://localhost:3000/api/v1/flights/``
+```
+  To create Flight
+  /*
+    POST : /flights
+    req-body {
+        flightNumber : 'UK 808'
+        airplaneId : a380
+        departureAirportId : 12
+        arrivalAirportId : 11
+        arrivalTime : 11:10:00
+        departureTime : 09:10:00
+        price : 2000
+        boardingGate : 12A
+        totalSeats : 120
+    }
+  */
+  body {
+      flightNumber: req.body.flightNumber,
+      airplaneId: req.body.airplaneId,
+      departureAirportId: req.body.departureAirportId,
+      arrivalAirportId: req.body.arrivalAirportId,
+      arrivalTime: req.body.arrivalTime,
+      departureTime: req.body.departureTime,
+      price: req.body.price,
+      boardingGate: req.body.boardingGate,
+      totalSeats: req.body.totalSeats,
+    }
+
+
+  To get Flight
+  /*
+    GET : /flights/:query_params
+    req-body {}
+  */
+  body {
+    data : req.query
+  }
+
+  To update Flight
+  /*
+    Patch : /Flights/{data}
+    req-body {}
+  */
+```
